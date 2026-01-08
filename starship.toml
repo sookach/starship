@@ -1,0 +1,22 @@
+add_newline = false
+
+format = '[⃗➜](bold bright-white) $directory$git_branch[⚡](bold yellow)'
+
+[directory]
+truncation_length = 0
+truncate_to_repo = false
+style = 'bold bright-blue'
+
+[git_branch]
+format = '[$symbol$branch(:$remote_branch)]($style) '
+style = 'bold #FFAC1C'
+
+[custom.branch]
+command = 'awk -f ~/.config/starship/branch.awk'
+when = 'true'
+format = '[$output](bold bright-orange)'
+
+[custom.path]
+command = 'awk -f ~/.config/starship/path.awk'
+when = 'true'
+format = '[$output](bold bright-blue)'
