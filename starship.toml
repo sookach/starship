@@ -14,7 +14,7 @@ awk '
 BEGIN {
   s = ENVIRON["PWD"]
   sub(ENVIRON["HOME"], "~", s)
-  sub("^" ENVIRON["STARSHIP_F_PREFIX"] "/", "", s)
+  sub("^" ENVIRON["STARSHIP_F_PREFIX"] "/.*/", "", s)
   print s
 }
 '
