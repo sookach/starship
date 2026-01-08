@@ -31,14 +31,15 @@ BEGIN {
   sub(ENVIRON["HOME"], "~", s)
   sub("^" ENVIRON["STARSHIP_F_PREFIX"] "/", "", s)
   sub("/.*$", "", s)
-  print "(" s ")"
+  print s
 }
 '
 '''
 shell = 'zsh'
 when = '[[ "${STARSHIP_F_PREFIX+x}" && "$PWD" == "$STARSHIP_F_PREFIX"/* ]]'
-format = ' [$output](bold #FFAC1C)'
+format = ' [ $output](bold #FFAC1C)'
 
 [git_branch]
-format = '[$symbol$branch(:$remote_branch)]($style) '
+symbol = ''
+format = '[$symbol $branch(:$remote_branch)]($style) '
 style = 'bold #FFAC1C'
