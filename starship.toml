@@ -1,22 +1,44 @@
 add_newline = false
 
-format = '[⃗➜](bold bright-white) $directory$git_branch[⚡](bold #FFEA00)'
+format = '[⃗➜](bold bright-white)${custom.directory}${custom.fdir}${custom.fbranch} ${git_branch}[⚡](bold #FFEA00)'
 
-[directory]
-truncation_length = 0
-truncate_to_repo = false
-style = 'bold bright-blue'
+[custom.directory]
+command = 'pwd | sed "s|^$HOME|~|"'
+shell = 'zsh'
+when = '[[ ! "${STARSHIP_F_PREFIX+x}" || "$PWD" != "$STARSHIP_F_PREFIX"/* ]]'
+format = ' [$output](bold bright-blue)'
+
+[custom.fdir]
+command = '''
+awk '
+BEGIN {
+  s = ENVIRON["PWD"]
+  sub(ENVIRON["HOME"], "~", s)
+  sub("^" ENVIRON["STARSHIP_F_PREFIX"] "/", "", s)
+  print s
+}
+'
+'''
+shell = 'zsh'
+when = '[[ "${STARSHIP_F_PREFIX+x}" && "$PWD" == "$STARSHIP_F_PREFIX"/* ]]'
+format = ' [$output](bold bright-blue)'
+
+[custom.fbranch]
+command = '''
+awk '
+BEGIN {
+  s = ENVIRON["PWD"]
+  sub(ENVIRON["HOME"], "~", s)
+  sub("^" ENVIRON["STARSHIP_F_PREFIX"] "/", "", s)
+  sub("/.*$", "", s)
+  print "(" s ")"
+}
+'
+'''
+shell = 'zsh'
+when = '[[ "${STARSHIP_F_PREFIX+x}" && "$PWD" == "$STARSHIP_F_PREFIX"/* ]]'
+format = ' [$output](bold #FFAC1C)'
 
 [git_branch]
 format = '[$symbol$branch(:$remote_branch)]($style) '
 style = 'bold #FFAC1C'
-
-[custom.branch]
-command = 'awk -f ~/.config/starship/branch.awk'
-when = 'true'
-format = '[$output](bold bright-orange)'
-
-[custom.path]
-command = 'awk -f ~/.config/starship/path.awk'
-when = 'true'
-format = '[$output](bold bright-blue)'
