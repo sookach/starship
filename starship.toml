@@ -3,40 +3,21 @@ add_newline = false
 format = '[⃗➜](bold bright-white)${custom.directory}${custom.fdir}${custom.fbranch} ${git_branch}[⚡](bold #FFEA00)'
 
 [custom.directory]
-command = 'pwd | sed "s|^$HOME|~|"'
 shell = 'zsh'
-when = '[[ ! "${STARSHIP_F_PREFIX+x}" || "$PWD" != "$STARSHIP_F_PREFIX"/* ]]'
+command = 'pwd | sed "s|$HOME|~|"'
+when = '[[ -z ${STARSHIP_F_PREFIX-} || "$PWD" != "${STARSHIP_F_PREFIX%/}"/* ]]'
 format = ' [$output](bold bright-blue)'
 
 [custom.fdir]
-command = '''
-awk '
-BEGIN {
-  s = ENVIRON["PWD"]
-  sub(ENVIRON["HOME"], "~", s)
-  sub("^" ENVIRON["STARSHIP_F_PREFIX"] "/.*/", "", s)
-  print s
-}
-'
-'''
 shell = 'zsh'
-when = '[[ "${STARSHIP_F_PREFIX+x}" && "$PWD" == "$STARSHIP_F_PREFIX"/* ]]'
+command = 'pwd | sed "s|$HOME|~|" | sed "s|^$STARSHIP_F_PREFIX/.*/||"'
+when = '[[ -n ${STARSHIP_F_PREFIX-} && "$PWD" == "${STARSHIP_F_PREFIX%/}"/* ]]'
 format = ' [$output](bold bright-blue)'
 
 [custom.fbranch]
-command = '''
-awk '
-BEGIN {
-  s = ENVIRON["PWD"]
-  sub(ENVIRON["HOME"], "~", s)
-  sub("^" ENVIRON["STARSHIP_F_PREFIX"] "/", "", s)
-  sub("/.*$", "", s)
-  print s
-}
-'
-'''
 shell = 'zsh'
-when = '[[ "${STARSHIP_F_PREFIX+x}" && "$PWD" == "$STARSHIP_F_PREFIX"/* ]]'
+command = 'pwd | sed "s|$HOME|~|" | sed "s|^$STARSHIP_F_PREFIX/||" | sed "s|/.*$||"'
+when = '[[ -n ${STARSHIP_F_PREFIX-} && "$PWD" == "${STARSHIP_F_PREFIX%/}"/* ]]'
 format = ' [ $output](bold #FFAC1C)'
 
 [git_branch]
