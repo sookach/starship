@@ -1,6 +1,6 @@
 add_newline = false
 
-format = '[⃗➜](bold bright-white) $directory$git_branch[⚡](bold yellow)'
+format = '[⃗➜](bold bright-white) $directory$git_branch[⚡](bold #FFEA00)'
 
 [directory]
 truncation_length = 0
